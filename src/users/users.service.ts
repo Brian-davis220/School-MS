@@ -32,7 +32,8 @@ export class UsersService {
        });
     }
 
-    async findOne(email:string):Promise<User|null>{
-        return this.userRepository.findOne({where:{email}})
+    async findOne(id:string):Promise<User|null>{
+        return this.userRepository.findOne({where:{id},
+        select:['id','username','email','role']})
     }
 }

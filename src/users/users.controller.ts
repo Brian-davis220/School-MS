@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
@@ -15,5 +15,14 @@ export class UsersController {
     @Get()
     async getAllUsers():Promise<User[]>{
         return this.usersService.findAll()
+    }
+
+    @Get(':id')
+    async getUserById(@Param('id') id:string):Promise<User|null>{
+        const user =  this.usersService.findOne(id)
+        if(!user){
+            throw new NotFoundException('User not found')
+        }
+        return user
     }
 }
