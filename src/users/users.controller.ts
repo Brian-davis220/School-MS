@@ -1,7 +1,8 @@
-import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -23,6 +24,11 @@ export class UsersController {
         if(!user){
             throw new NotFoundException('User not found')
         }
-        return user
+        return user 
+    }
+
+    @Patch(":id")
+    async updateUser(@Param('id') id:string,@Body() updateUserDto:UpdateUserDto){
+        return this.usersService.update(id,updateUserDto)
     }
 }
